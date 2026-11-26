@@ -1,6 +1,6 @@
 {
     "name": "alcaparra-monaco",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "Soporte de AlcaparraLang para Monaco Editor: gramática, configuración de lenguaje y diagnósticos",
     "license": "MIT",
     "type": "module",

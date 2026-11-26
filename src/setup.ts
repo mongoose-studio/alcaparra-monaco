@@ -28,9 +28,16 @@ export interface SetupOptions {
      * setupAlcaparra(monaco, { extraLangs: [json] });
      * ```
      *
+     * ⚠️ **Los archivos de lenguaje de shiki exportan un array, no un objeto.** `json.mjs`
+     * entrega `[{ name: 'json', ... }]`, porque un lenguaje puede traer sus gramáticas
+     * embebidas al lado. Por eso se acepta cualquiera de las dos formas y se aplanan acá: shiki
+     * las come anidadas, pero Monaco necesita un id por lenguaje y leer `.name` de un array
+     * devuelve `undefined` — y Monaco contesta a eso con un `toLowerCase of undefined` que no
+     * menciona ni al lenguaje ni a quien lo registró.
+     *
      * Cada uno queda registrado en Monaco con su propio `name` como id.
      */
-    extraLangs?: LanguageRegistration[];
+    extraLangs?: (LanguageRegistration | LanguageRegistration[])[];
 }
 
 export interface AlcaparraSetup {
@@ -92,9 +99,19 @@ export function setupAlcaparra(
     });
     monaco.languages.setLanguageConfiguration(CAPER_LANGUAGE_ID, caperLanguageConfiguration);
 
-    const extraLangs = options.extraLangs ?? [];
+    const extraLangs = (options.extraLangs ?? []).flat();
 
     for (const lang of extraLangs) {
+        if (typeof lang.name !== 'string' || lang.name === '') {
+            // Antes que dejar que Monaco falle con `toLowerCase of undefined` desde el fondo de
+            // su registro, sin decir qué lenguaje ni quién lo metió.
+            throw new TypeError(
+                'alcaparra-monaco: every entry in `extraLangs` needs a `name`, which is the id '
+                + 'Monaco registers it under. Shiki language files export an array, so pass the '
+                + 'array itself (`extraLangs: [json]`) and not one of its members.',
+            );
+        }
+
         // Solo el id y la gramática. La configuración de edición de un lenguaje ajeno no es
         // nuestra: quien lo trae sabrá si además quiere brackets y comentarios.
         monaco.languages.register({ id: lang.name });
