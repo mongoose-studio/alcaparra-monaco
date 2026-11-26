@@ -1,0 +1,161 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Caper",
+  "scopeName": "source.caper",
+  "patterns": [
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#strings"
+    },
+    {
+      "include": "#keywords_control"
+    },
+    {
+      "include": "#keywords_reserved"
+    },
+    {
+      "include": "#keywords_declaration"
+    },
+    {
+      "include": "#keywords_other"
+    },
+    {
+      "include": "#keywords_logical"
+    },
+    {
+      "include": "#literals"
+    },
+    {
+      "include": "#numbers"
+    },
+    {
+      "include": "#operators"
+    },
+    {
+      "include": "#fn_call"
+    },
+    {
+      "include": "#identifiers"
+    }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.double-slash.caper",
+          "match": "//.*$"
+        },
+        {
+          "name": "comment.block.caper",
+          "begin": "/\\*",
+          "end": "\\*/",
+          "captures": {
+            "0": {
+              "name": "punctuation.definition.comment.caper"
+            }
+          }
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.caper",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            {
+              "name": "constant.character.escape.caper",
+              "match": "\\\\."
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.caper",
+          "begin": "'",
+          "end": "'",
+          "patterns": [
+            {
+              "name": "constant.character.escape.caper",
+              "match": "\\\\."
+            }
+          ]
+        }
+      ]
+    },
+    "keywords_control": {
+      "name": "keyword.control.caper",
+      "match": "\\b(if|else|while|foreach|in|break|continue|match|try|catch|throw)\\b"
+    },
+    "keywords_declaration": {
+      "name": "keyword.declaration.caper",
+      "match": "\\b(let|var|const|fn)\\b"
+    },
+    "keywords_other": {
+      "name": "keyword.other.caper",
+      "match": "\\b(emit|use|header|main)\\b"
+    },
+    "keywords_logical": {
+      "name": "keyword.operator.word.caper",
+      "match": "\\b(and|or|not)\\b"
+    },
+    "literals": {
+      "name": "constant.language.caper",
+      "match": "\\b(true|false|null)\\b"
+    },
+    "numbers": {
+      "name": "constant.numeric.caper",
+      "match": "\\b[0-9][0-9_]*(\\.[0-9][0-9_]*)?\\b"
+    },
+    "operators": {
+      "patterns": [
+        {
+          "name": "keyword.operator.arithmetic.caper",
+          "match": "(\\*\\*|\\+|-|\\*|/|%)"
+        },
+        {
+          "name": "keyword.operator.comparison.caper",
+          "match": "(==|!=|<=|>=|<|>)"
+        },
+        {
+          "name": "keyword.operator.assignment.caper",
+          "match": "(?<![=!<>])=(?![=>])"
+        },
+        {
+          "name": "keyword.operator.null-coalescing.caper",
+          "match": "\\?\\?"
+        },
+        {
+          "name": "keyword.operator.range.caper",
+          "match": "\\.\\.\\.|\\.\\."
+        },
+        {
+          "name": "keyword.operator.fat-arrow.caper",
+          "match": "=>"
+        },
+        {
+          "name": "keyword.operator.pipe.caper",
+          "match": "\\|"
+        }
+      ]
+    },
+    "fn_call": {
+      "match": "\\b([a-zA-Z_][a-zA-Z0-9_]*)\\s*(?=\\()",
+      "captures": {
+        "1": {
+          "name": "entity.name.function.caper"
+        }
+      }
+    },
+    "identifiers": {
+      "name": "variable.other.caper",
+      "match": "\\b[a-zA-Z_][a-zA-Z0-9_]*\\b"
+    },
+    "keywords_reserved": {
+      "name": "keyword.other.reserved.caper",
+      "match": "\\b(return)\\b"
+    }
+  }
+}
